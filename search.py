@@ -1,3 +1,5 @@
+# Completed by Joshua Fawcett and Hans Prieto
+
 # search.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
