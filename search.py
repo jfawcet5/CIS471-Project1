@@ -149,7 +149,39 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    startNode = (problem.getStartState(), [], 0) # State of form: (node, path, pathcost)
+
+    fringe = util.PriorityQueue() # Priority queue for fringe = selects nodes with lowest priority (Based on heuristic)
+    fringe.push(startNode, 0) # Start node with initial priority of 0
+
+    closed = set() # Contains all expanded nodes
+
+    while not fringe.isEmpty():
+        curState = fringe.pop() # Select node with lowest priority
+
+        node = curState[0] # Store current node
+        path = curState[1] # Get path to current node
+        pathcost = curState[2] # Get cost of path to current node
+
+        if problem.isGoalState(node): # If current node is the goal
+            return path # Return path to current node
+
+        if node not in closed: # If current node has not been expanded
+            closed.add(node) # Add current node to closed set, since we will expand it
+
+            # 'children' is a list of the form: [(successor, action, stepCost), (), ...]
+            children = problem.getSuccessors(node) # Get children of current node (expand current node)
+
+            for child,action,cost in children: # Iterate through each child 
+                if child in closed: # If child has already been expanded, then ignore it
+                    continue
+                else:
+                    hn = heuristic(child, problem) # Heuristic: estimated cost from 'child' to goal node
+                    gn = pathcost + cost # Path cost from start node to 'child'
+                    newState = (child, path + [action], gn) # newState = (current node, updated path, updated cost)
+                    fringe.push(newState, hn + gn) # Add newState to fringe with priority : f(n) = h(n) + g(n)
+
+    raise Exception("Failure") # Did not find goal
 
 
 # Abbreviations
