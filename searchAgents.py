@@ -490,8 +490,23 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+    start = problem.getStartState()
     "*** YOUR CODE HERE ***"
-    return 0
+
+    maxDist = 0
+
+    # Foodlist is a list of the coordinates of the remaining food, EX: foodlist = [(1, 2), (3, 4), ...]
+    foodlist = foodGrid.asList()
+
+    xy1 = position
+
+    for food in foodlist:
+        xy2 = food
+        #dist = abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1]) # Fast: path found in 0.9s, 9551 expanded, 3/4 autograder
+        dist =  mazeDistance(xy1, xy2, problem.startingGameState) # Slow: path found in 8.6s, 4137 expanded, 5/4 autograder
+        if (dist > maxDist):
+            maxDist = dist
+    return maxDist
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
