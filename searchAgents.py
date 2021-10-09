@@ -380,10 +380,24 @@ def cornersHeuristic(state, problem):
     admissible (as well as consistent).
     """
     corners = problem.corners # These are the corner coordinates
+    #print(f"Corners: {corners}")
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    xy1, cornersLeft = state
+
+    if (len(cornersLeft) == 0):
+        return 0
+
+    maxDist = 0
+    for corner in cornersLeft:
+        xy2 = corner
+
+        #dist = mazeDistance( xy1, xy2, problem.gameState) # SLOW: "py pacman.py -l mediumCorners -p AStarCornersAgent": path found in 2.3s, 801 expanded
+        dist = abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1]) # Fast: "py pacman.py -l mediumCorners -p AStarCornersAgent": path found in 0.0s, 1136 expanded
+        if dist > maxDist:
+            maxDist = dist
+    return maxDist
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
